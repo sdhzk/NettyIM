@@ -14,6 +14,7 @@ import static io.starsky.im.protocol.command.Command.*;
 public class IMHandler extends SimpleChannelInboundHandler<Packet> {
     public static final IMHandler INSTANCE = new IMHandler();
     private Map<Byte, SimpleChannelInboundHandler<? extends Packet>> handlerMap;
+
     private IMHandler() {
         handlerMap = new HashMap<>();
         handlerMap.put(MESSAGE_REQUEST, MessageRequestHandler.INSTANCE);
@@ -24,6 +25,7 @@ public class IMHandler extends SimpleChannelInboundHandler<Packet> {
         handlerMap.put(QUIT_GROUP_REQUEST, QuitGroupRequestHandler.INSTANCE);
         handlerMap.put(LOGOUT_REQUEST, LogoutRequestHandler.INSTANCE);
     }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Packet packet) throws Exception {
         handlerMap.get(packet.getCommand()).channelRead(ctx, packet);

@@ -1,7 +1,6 @@
 package io.starsky.im.protocol;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import io.starsky.im.protocol.request.*;
 import io.starsky.im.protocol.response.*;
 import io.starsky.im.serialize.Serializer;
@@ -64,7 +63,7 @@ public class PacketCodeC {
         byteBuf.readBytes(bytes);
         Class<? extends Packet> packetType = getPacketType(command);
         Serializer serializer = getSerializer(serializeAlgorithm);
-        if(packetType != null && serializer != null){
+        if (packetType != null && serializer != null) {
             return serializer.deserialize(packetType, bytes);
         }
         return null;

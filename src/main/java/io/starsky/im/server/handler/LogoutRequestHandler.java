@@ -10,12 +10,14 @@ import io.starsky.im.util.SessionUtils;
 @ChannelHandler.Sharable
 public class LogoutRequestHandler extends SimpleChannelInboundHandler<LogoutRequestPacket> {
     public static final LogoutRequestHandler INSTANCE = new LogoutRequestHandler();
+
     private LogoutRequestHandler() {
 
     }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LogoutRequestPacket logoutRequestPacket) throws Exception {
-        System.out.println("["+SessionUtils.getSession(ctx.channel()).getUserName()+"]退出登录");
+        System.out.println("[" + SessionUtils.getSession(ctx.channel()).getUserName() + "]退出登录");
         SessionUtils.unBindSession(ctx.channel());
         LogoutResponsePacket logoutResponsePacket = new LogoutResponsePacket();
         logoutResponsePacket.setSuccess(true);

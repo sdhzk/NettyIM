@@ -2,7 +2,6 @@ package io.starsky.im.client.console;
 
 import io.netty.channel.Channel;
 import io.starsky.im.protocol.request.GroupMessageRequestPacket;
-import io.starsky.im.protocol.request.MessageRequestPacket;
 
 import java.util.Scanner;
 

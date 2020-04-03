@@ -9,13 +9,14 @@ import io.starsky.im.protocol.response.MessageResponsePacket;
 import io.starsky.im.session.Session;
 import io.starsky.im.util.SessionUtils;
 
-import java.util.Date;
 @ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
     public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
-    private MessageRequestHandler(){
+
+    private MessageRequestHandler() {
 
     }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket messageRequestPacket) {
         Session session = SessionUtils.getSession(ctx.channel());
@@ -25,10 +26,10 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         messageResponsePacket.setMessage(messageRequestPacket.getMessage());
 
         Channel toUserChannel = SessionUtils.getChannel(messageRequestPacket.getToUserId());
-        if(toUserChannel != null && SessionUtils.hasLogin(toUserChannel)){
+        if (toUserChannel != null && SessionUtils.hasLogin(toUserChannel)) {
             toUserChannel.writeAndFlush(messageResponsePacket);
-        }else{
-            System.err.println("["+messageRequestPacket.getToUserId()+"]不在线，发送失败！");
+        } else {
+            System.err.println("[" + messageRequestPacket.getToUserId() + "]不在线，发送失败！");
         }
     }
 }

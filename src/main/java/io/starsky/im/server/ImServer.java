@@ -7,13 +7,13 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.starsky.im.client.handler.LogoutResponseHandler;
 import io.starsky.im.codec.PacketCodecHandler;
-import io.starsky.im.codec.PacketDecoder;
-import io.starsky.im.codec.PacketEncoder;
 import io.starsky.im.codec.Spliter;
 import io.starsky.im.handler.IMIdleStateHandler;
-import io.starsky.im.server.handler.*;
+import io.starsky.im.server.handler.AuthHandler;
+import io.starsky.im.server.handler.HeartBeatRequestHandler;
+import io.starsky.im.server.handler.IMHandler;
+import io.starsky.im.server.handler.LoginRequestHandler;
 
 public class ImServer {
     private static final int PORT = 8000;

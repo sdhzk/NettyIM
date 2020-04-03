@@ -21,12 +21,12 @@ public final class SessionUtils {
         channel.attr(Attributes.SESSION).set(session);
     }
 
-    public static void unBindSession(Channel channel){
-        if(hasLogin(channel)){
+    public static void unBindSession(Channel channel) {
+        if (hasLogin(channel)) {
             Session session = getSession(channel);
             USERID_CHANNEL_MAP.remove(session.getUserId());
             channel.attr(Attributes.SESSION).set(null);
-            System.out.println(session+" 退出登录");
+            System.out.println(session + " 退出登录");
         }
     }
 

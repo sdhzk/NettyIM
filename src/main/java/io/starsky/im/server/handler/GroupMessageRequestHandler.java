@@ -7,12 +7,15 @@ import io.netty.channel.group.ChannelGroup;
 import io.starsky.im.protocol.request.GroupMessageRequestPacket;
 import io.starsky.im.protocol.response.GroupMessageResponsePacket;
 import io.starsky.im.util.SessionUtils;
+
 @ChannelHandler.Sharable
 public class GroupMessageRequestHandler extends SimpleChannelInboundHandler<GroupMessageRequestPacket> {
     public static final GroupMessageRequestHandler INSTANCE = new GroupMessageRequestHandler();
+
     private GroupMessageRequestHandler() {
 
     }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, GroupMessageRequestPacket request) throws Exception {
         String groupId = request.getGroupId();

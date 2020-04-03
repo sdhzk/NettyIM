@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import static io.starsky.im.protocol.command.Command.JOIN_GROUP_REQUEST;
 import static io.starsky.im.protocol.command.Command.JOIN_GROUP_RESPONSE;
 
 @Data

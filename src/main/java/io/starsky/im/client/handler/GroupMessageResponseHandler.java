@@ -9,6 +9,6 @@ public class GroupMessageResponseHandler extends SimpleChannelInboundHandler<Gro
     protected void channelRead0(ChannelHandlerContext ctx, GroupMessageResponsePacket response) throws Exception {
         String fromGroupId = response.getFromGroupId();
         String fromUser = response.getFromUser();
-        System.out.println("收到群["+fromGroupId+"]中["+fromUser+"]发来的消息："+response.getMessage());
+        System.out.println("收到群[" + fromGroupId + "]中[" + fromUser + "]发来的消息：" + response.getMessage());
     }
 }

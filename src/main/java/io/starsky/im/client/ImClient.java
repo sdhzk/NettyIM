@@ -10,12 +10,8 @@ import io.starsky.im.client.console.ConsoleCommandManager;
 import io.starsky.im.client.console.LoginConsoleCommand;
 import io.starsky.im.client.handler.*;
 import io.starsky.im.codec.PacketCodecHandler;
-import io.starsky.im.codec.PacketDecoder;
-import io.starsky.im.codec.PacketEncoder;
 import io.starsky.im.codec.Spliter;
 import io.starsky.im.handler.IMIdleStateHandler;
-import io.starsky.im.protocol.request.LoginRequestPacket;
-import io.starsky.im.protocol.request.MessageRequestPacket;
 import io.starsky.im.util.SessionUtils;
 
 import java.util.Date;
@@ -81,9 +77,9 @@ public class ImClient {
         Scanner scanner = new Scanner(System.in);
         new Thread(() -> {
             while (!Thread.interrupted()) {
-                if(SessionUtils.hasLogin(channel)){
+                if (SessionUtils.hasLogin(channel)) {
                     consoleCommandManager.exec(scanner, channel);
-                }else{
+                } else {
                     loginConsoleCommand.exec(scanner, channel);
                 }
             }

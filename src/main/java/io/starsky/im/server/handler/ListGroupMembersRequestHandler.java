@@ -11,25 +11,28 @@ import io.starsky.im.util.SessionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 @ChannelHandler.Sharable
 public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<ListGroupMembersRequestPacket> {
     public static final ListGroupMembersRequestHandler INSTANCE = new ListGroupMembersRequestHandler();
+
     private ListGroupMembersRequestHandler() {
 
     }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ListGroupMembersRequestPacket request) {
         String groupId = request.getGroupId();
         ChannelGroup channelGroup = SessionUtils.getChannelGroup(groupId);
         ListGroupMembersResponsePacket response = new ListGroupMembersResponsePacket();
         response.setGroupId(groupId);
-        if(channelGroup != null){
+        if (channelGroup != null) {
             List<Session> sessionList = channelGroup.stream().map(SessionUtils::getSession).collect(Collectors.toList());
             response.setSuccess(true);
             response.setSessionList(sessionList);
-        }else{
+        } else {
             response.setSuccess(false);
-            response.setReason("群组["+groupId+"]不存在！");
+            response.setReason("群组[" + groupId + "]不存在！");
         }
         ctx.writeAndFlush(response);
     }

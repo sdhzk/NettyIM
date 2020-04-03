@@ -9,7 +9,7 @@ import io.starsky.im.protocol.request.HeartBeatRequestPacket;
 public class HeartBeatRequestHandler extends SimpleChannelInboundHandler<HeartBeatRequestPacket> {
     public static final HeartBeatRequestHandler INSTANCE = new HeartBeatRequestHandler();
 
-    private HeartBeatRequestHandler(){
+    private HeartBeatRequestHandler() {
 
     }
 

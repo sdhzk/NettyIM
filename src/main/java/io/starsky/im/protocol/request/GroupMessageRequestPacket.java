@@ -15,6 +15,7 @@ import static io.starsky.im.protocol.command.Command.GROUP_MESSAGE_REQUEST;
 public class GroupMessageRequestPacket extends Packet {
     private String groupId;
     private String message;
+
     @Override
     public Byte getCommand() {
         return GROUP_MESSAGE_REQUEST;

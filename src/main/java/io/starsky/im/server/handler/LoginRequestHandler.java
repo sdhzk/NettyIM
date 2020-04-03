@@ -10,14 +10,15 @@ import io.starsky.im.util.IdUtils;
 import io.starsky.im.util.SessionUtils;
 
 import java.util.Date;
-import java.util.UUID;
 
 @ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
     public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
+
     private LoginRequestHandler() {
 
     }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket request) {
         LoginResponsePacket response = new LoginResponsePacket();
@@ -28,7 +29,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             response.setUserId(userId);
             response.setSuccess(true);
             SessionUtils.bindSession(new Session(userId, userName), ctx.channel());
-            System.out.println("["+userName+"]登录成功");
+            System.out.println("[" + userName + "]登录成功");
         } else {
             response.setSuccess(false);
             response.setReason("账号密码校验失败");

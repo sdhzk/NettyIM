@@ -1,7 +1,6 @@
 package io.starsky.im.client.console;
 
 import io.netty.channel.Channel;
-import io.starsky.im.util.SessionUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +24,10 @@ public class ConsoleCommandManager implements ConsoleCommand {
     public void exec(Scanner scanner, Channel channel) {
         String command = scanner.next();
         ConsoleCommand consoleCommand = consoleCommandMap.get(command);
-        if(consoleCommand != null){
+        if (consoleCommand != null) {
             consoleCommand.exec(scanner, channel);
         } else {
-            System.err.println("无法识别["+command+"]指令，请重新输入！");
+            System.err.println("无法识别[" + command + "]指令，请重新输入！");
         }
     }
 }
