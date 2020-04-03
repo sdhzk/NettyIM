@@ -37,12 +37,14 @@ public class PacketCodeC {
         packetTypeMap.put(QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
         packetTypeMap.put(GROUP_MESSAGE_REQUEST, GroupMessageRequestPacket.class);
         packetTypeMap.put(GROUP_MESSAGE_RESPONSE, GroupMessageResponsePacket.class);
+        packetTypeMap.put(HEARTBEAT_REQUEST, HeartBeatRequestPacket.class);
+        packetTypeMap.put(HEARTBEAT_RESPONSE, HeartBeatResponsePacket.class);
 
         serializerMap = new HashMap<>();
         serializerMap.put(SerializerAlogrithm.JSON, Serializer.DEFAULT);
     }
 
-    public ByteBuf encode(ByteBuf byteBuf, Packet packet) {
+    public void encode(ByteBuf byteBuf, Packet packet) {
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(packet.getVersion());
@@ -50,7 +52,6 @@ public class PacketCodeC {
         byteBuf.writeByte(packet.getCommand());
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
-        return byteBuf;
     }
 
     public Packet decode(ByteBuf byteBuf) {

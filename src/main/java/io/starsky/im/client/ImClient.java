@@ -9,9 +9,11 @@ import io.starsky.im.client.console.ConsoleCommand;
 import io.starsky.im.client.console.ConsoleCommandManager;
 import io.starsky.im.client.console.LoginConsoleCommand;
 import io.starsky.im.client.handler.*;
+import io.starsky.im.codec.PacketCodecHandler;
 import io.starsky.im.codec.PacketDecoder;
 import io.starsky.im.codec.PacketEncoder;
 import io.starsky.im.codec.Spliter;
+import io.starsky.im.handler.IMIdleStateHandler;
 import io.starsky.im.protocol.request.LoginRequestPacket;
 import io.starsky.im.protocol.request.MessageRequestPacket;
 import io.starsky.im.util.SessionUtils;
@@ -37,8 +39,9 @@ public class ImClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
-                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new PacketCodecHandler());
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
@@ -47,7 +50,7 @@ public class ImClient {
                         ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(new JoinGroupResponseHandler());
                         ch.pipeline().addLast(new QuitGroupResponseHandler());
-                        ch.pipeline().addLast(new PacketEncoder());
+                        ch.pipeline().addLast(new HeartBeatTimerHandler());
                     }
                 });
 

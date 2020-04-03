@@ -1,5 +1,6 @@
 package io.starsky.im.server.handler;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.starsky.im.protocol.request.LoginRequestPacket;
@@ -11,25 +12,30 @@ import io.starsky.im.util.SessionUtils;
 import java.util.Date;
 import java.util.UUID;
 
+@ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+    public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
+    private LoginRequestHandler() {
+
+    }
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket loginRequestPacket) {
-        LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
-        String userName = loginRequestPacket.getUserName();
-        loginResponsePacket.setUserName(userName);
-        if (valid(loginRequestPacket)) {
+    protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket request) {
+        LoginResponsePacket response = new LoginResponsePacket();
+        String userName = request.getUserName();
+        response.setUserName(userName);
+        if (valid(request)) {
             String userId = IdUtils.randomId();
-            loginResponsePacket.setUserId(userId);
-            loginResponsePacket.setSuccess(true);
+            response.setUserId(userId);
+            response.setSuccess(true);
             SessionUtils.bindSession(new Session(userId, userName), ctx.channel());
             System.out.println("["+userName+"]登录成功");
         } else {
-            loginResponsePacket.setSuccess(false);
-            loginResponsePacket.setReason("账号密码校验失败");
+            response.setSuccess(false);
+            response.setReason("账号密码校验失败");
             System.out.println(new Date() + ": 登录失败");
         }
 
-        ctx.channel().writeAndFlush(loginResponsePacket);
+        ctx.writeAndFlush(response);
     }
 
     @Override

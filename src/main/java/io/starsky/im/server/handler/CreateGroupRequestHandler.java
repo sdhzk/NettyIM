@@ -1,6 +1,7 @@
 package io.starsky.im.server.handler;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -14,7 +15,14 @@ import io.starsky.im.util.SessionUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+@ChannelHandler.Sharable
 public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
+    public static final CreateGroupRequestHandler INSTANCE = new CreateGroupRequestHandler();
+
+    private CreateGroupRequestHandler() {
+
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CreateGroupRequestPacket createGroupRequestPacket) {
         List<String> userIdList = createGroupRequestPacket.getUserIdList();
@@ -26,9 +34,9 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
         userIdList.remove(currentSession.getUserId());
         for (String userId : userIdList) {
             Channel channel = SessionUtils.getChannel(userId);
-            if(channel != null){
+            if (channel != null) {
                 Session session = SessionUtils.getSession(channel);
-                if(session != null){
+                if (session != null) {
                     userNameList.add(session.getUserName());
                     channelGroup.add(channel);
                 }
@@ -42,8 +50,8 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
 
         channelGroup.writeAndFlush(createGroupResponsePacket);
 
-        System.out.print("群创建成功，id为["+groupId+"]，");
-        System.out.println("群里面有："+userNameList);
+        System.out.print("群创建成功，id为[" + groupId + "]，");
+        System.out.println("群里面有：" + userNameList);
 
         SessionUtils.bindChannelGroup(groupId, channelGroup);
 

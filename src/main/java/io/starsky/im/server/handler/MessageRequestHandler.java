@@ -1,6 +1,7 @@
 package io.starsky.im.server.handler;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.starsky.im.protocol.request.MessageRequestPacket;
@@ -9,8 +10,12 @@ import io.starsky.im.session.Session;
 import io.starsky.im.util.SessionUtils;
 
 import java.util.Date;
-
+@ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
+    public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
+    private MessageRequestHandler(){
+
+    }
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket messageRequestPacket) {
         Session session = SessionUtils.getSession(ctx.channel());

@@ -1,5 +1,6 @@
 package io.starsky.im.server.handler;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -7,8 +8,12 @@ import io.starsky.im.protocol.request.JoinGroupRequestPacket;
 import io.starsky.im.protocol.response.JoinGroupResponsePacket;
 import io.starsky.im.session.Session;
 import io.starsky.im.util.SessionUtils;
-
+@ChannelHandler.Sharable
 public class JoinGroupRequestHandler extends SimpleChannelInboundHandler<JoinGroupRequestPacket> {
+    public static final JoinGroupRequestHandler INSTANCE = new JoinGroupRequestHandler();
+    private JoinGroupRequestHandler() {
+
+    }
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, JoinGroupRequestPacket request) {
         String groupId = request.getGroupId();
@@ -24,7 +29,7 @@ public class JoinGroupRequestHandler extends SimpleChannelInboundHandler<JoinGro
         }else{
             response.setSuccess(false);
             response.setReason("群组["+groupId+"]不存在！");
-            ctx.channel().writeAndFlush(response);
+            ctx.writeAndFlush(response);
         }
     }
 }

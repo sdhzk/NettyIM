@@ -8,9 +8,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.starsky.im.client.handler.LogoutResponseHandler;
+import io.starsky.im.codec.PacketCodecHandler;
 import io.starsky.im.codec.PacketDecoder;
 import io.starsky.im.codec.PacketEncoder;
 import io.starsky.im.codec.Spliter;
+import io.starsky.im.handler.IMIdleStateHandler;
 import io.starsky.im.server.handler.*;
 
 public class ImServer {
@@ -29,18 +31,13 @@ public class ImServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
-                        ch.pipeline().addLast(new PacketDecoder());
-                        ch.pipeline().addLast(new LoginRequestHandler());
-                        ch.pipeline().addLast(new AuthHandler());
-                        ch.pipeline().addLast(new MessageRequestHandler());
-                        ch.pipeline().addLast(new GroupMessageRequestHandler());
-                        ch.pipeline().addLast(new CreateGroupRequestHandler());
-                        ch.pipeline().addLast(new ListGroupMembersRequestHandler());
-                        ch.pipeline().addLast(new JoinGroupRequestHandler());
-                        ch.pipeline().addLast(new QuitGroupRequestHandler());
-                        ch.pipeline().addLast(new LogoutRequestHandler());
-                        ch.pipeline().addLast(new PacketEncoder());
+                        ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
+                        ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(AuthHandler.INSTANCE);
+                        ch.pipeline().addLast(IMHandler.INSTANCE);
                     }
                 });
         bind(serverBootstrap, PORT);
